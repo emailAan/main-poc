@@ -1,0 +1,10 @@
+main:
+ image: main-poc-main
+ ports:
+  - "3000"
+proxy:
+ image: main-poc-proxy
+ links:
+   - main
+ ports:
+   - "80:8080"
