@@ -2,9 +2,29 @@ main:
  image: main-poc-main
  ports:
   - "3000"
+agenda:
+ image: main-poc-agenda
+ ports:
+  - "3000"
+facturatie:
+ image: main-poc-facturatie
+ ports:
+  - "3000"
+url-loader:
+ image: main-poc-url-loader
+ ports:
+  - "3000"
+zorgplan:
+ image: main-poc-zorgplan
+ ports:
+  - "3000"
 proxy:
  image: main-poc-proxy
  links:
    - main
+   - agenda
+   - facturatie
+   - url-loader
+   - zorgplan
  ports:
    - "80:8080"
