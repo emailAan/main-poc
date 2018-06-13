@@ -1,20 +1,19 @@
+cd modules/agenda
+npm install
+npm run build:portal
+cd ../..
 
-cd modules\agenda
-call npm install
-call npm run build:portal
-cd ..\..
+cd modules/facturatie
+npm install
+npm run build:portal
+cd ../..
 
-cd modules\facturatie
-call npm install
-call npm run build:portal
-cd ..\..
-
-cd modules\zorgplan
-call npm install
-call npm run build:portal
-cd ..\..
+cd modules/zorgplan
+npm install
+npm run build:portal
+cd ../..
 
 cd main
-call npm install
-call npm run build
+npm install
+npm run build
 cd ..
