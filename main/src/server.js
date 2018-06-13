@@ -18,17 +18,29 @@ app.get('/api/navigation', function (req, res) {
       children: [
         {
           label: 'Agenda',
-          module: '/api/agenda'
+          module: 'agenda'
+        },
+        {
+          label: 'Agenda',
+          module: 'agenda',
+          subModule: 'afsprakenVandaag'
         },
         {
           label: 'Zorplan',
-          module: '/api/zorgplan'
+          module: 'zorgplan'
         }
       ]
     },
     {
       label: 'Facturatie',
-      module: '/api/facturatie'
+      module: 'facturatie'
+    },
+    {
+      label: 'NOS',
+      module: 'url-load',
+      params: {
+        url: 'http://www.nos.nl'
+      }
     }
   ]
   res.status(200).send(nav)
