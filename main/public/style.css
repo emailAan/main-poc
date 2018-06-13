@@ -42,3 +42,19 @@
     text-decoration: none;
     color: white;
 }
+
+span.counter {
+    background: firebrick;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 1.6em;
+    margin-left: 5px;
+    text-align: center;
+    min-width: 1.0em;
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+  }

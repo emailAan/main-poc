@@ -5,23 +5,36 @@ export function hashPrefix (prefix) {
     return location.hash.startsWith(`#${prefix}`)
   }
 }
+// app.get('/api/afsprakenVandaag', () => ({
+//   name: MODULE,
+//   subModule: 'afsprakenVandaag',
+//   label: 'Afspraken van vandaag',
+//   counter: `/api/${MODULE}/counter/afsprakenVandaag`,
+//   stateless: false
+// }))
 
-export async function loadModule (module, globalEventDistributor, props = {}) {
-  return loadApp(module,
-    `/${module}`,
-    `/module/${module}/singleSpaEntry.js`,
-    `/module/${module}/store.js`,
-    globalEventDistributor,
-    props)
+async function fetchModuleInfo (module, subModule) {
+  console.log(`fetching module info for ${module}${subModule ? '/' + subModule : ''}`)
+  const response = await window.fetch(`/api/${module}${subModule ? '/' + subModule : ''}`)
+  return await response.json()
+}
+
+export async function loadModule (name, module, subModule, globalEventDistributor, props = {}) {
+  let moduleInfo = fetchModuleInfo(module, subModule)
+
+  return loadApp(name, `/${name}`,
+    moduleInfo.entry ? moduleInfo.entry : `/module/${module}/singleSpaEntry.js`,
+    moduleInfo.stateless ? null : (moduleInfo.store ? moduleInfo.store : `/module/${module}/store.js`),
+    globalEventDistributor, {...props, ...moduleInfo})
 }
 
 export async function loadApp (name, hash, appURL, storeURL, globalEventDistributor, props = {}) {
   let storeModule = {}
-  let customProps = {globalEventDistributor: globalEventDistributor, ...props}
+  let customProps = { globalEventDistributor: globalEventDistributor, ...props }
 
   // try to import the store module
   try {
-    storeModule = storeURL ? await window.SystemJS.import(storeURL) : {storeInstance: null}
+    storeModule = storeURL ? await window.SystemJS.import(storeURL) : { storeInstance: null }
   } catch (e) {
     console.log(`Could not load store of app ${name}.`, e)
   }

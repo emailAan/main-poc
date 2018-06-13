@@ -21,7 +21,7 @@ app.get('/api/navigation', function (req, res) {
           module: 'agenda'
         },
         {
-          label: 'Agenda',
+          label: 'Afspraken vandaag',
           module: 'agenda',
           subModule: 'afsprakenVandaag'
         },
@@ -37,7 +37,8 @@ app.get('/api/navigation', function (req, res) {
     },
     {
       label: 'NOS',
-      module: 'url-load',
+      module: 'url-loader',
+      stateless: true,
       params: {
         url: 'http://www.nos.nl'
       }
