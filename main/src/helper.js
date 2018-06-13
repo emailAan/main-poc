@@ -6,6 +6,15 @@ export function hashPrefix (prefix) {
   }
 }
 
+export async function loadModule (module, globalEventDistributor, props = {}) {
+  return loadApp(module,
+    `/${module}`,
+    `/module/${module}/singleSpaEntry.js`,
+    `/module/${module}/store.js`,
+    globalEventDistributor,
+    props)
+}
+
 export async function loadApp (name, hash, appURL, storeURL, globalEventDistributor, props = {}) {
   let storeModule = {}
   let customProps = {globalEventDistributor: globalEventDistributor, ...props}
