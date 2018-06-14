@@ -43,25 +43,14 @@ class Navbar extends React.Component {
     let navData = [...this.state.navData]
 
     navData.map((e) => {
-      if (JSON.stringify(item) === JSON.stringify(e)) {
-        console.log('nooit hier?')
-        return {...e, counter}
-      } else {
-        console.log('altijd daar!')
-        return e
-      }
+      return (JSON.stringify(item) === JSON.stringify(e)) ? {...e, counter: counter} : e
     })
-
-    this.setState({...this.state, navData: navData})
+    console.log(navData)
+    this.setState({...this.state, navData: navData, timestamp: new Date()})
   }
 
   componentDidMount () {
-    var navData = [...this.state.navData]
-
-    fetchCounters(navData, this)
-    // console.log('Done fetching counters.')
-
-    // this.setState({...this.state, navData: navData})
+    fetchCounters(this.state.navData, this)
   }
 
   renderEntries (entries) {
@@ -87,6 +76,7 @@ class Navbar extends React.Component {
 
   render () {
     let {navData} = this.state
+    console.log('renderrrrr', navData)
     return (
       <ul>
         {this.renderEntries(navData)}
