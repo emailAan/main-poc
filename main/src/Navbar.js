@@ -42,7 +42,7 @@ class Navbar extends React.Component {
   updateNavItemWithCounter (item, counter) {
     let navData = [...this.state.navData]
 
-    navData.map((e) => {
+    navData = navData.map((e) => {
       return (JSON.stringify(item) === JSON.stringify(e)) ? {...e, counter: counter} : e
     })
     console.log(navData)
