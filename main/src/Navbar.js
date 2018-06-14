@@ -1,22 +1,35 @@
 import React, {Fragment} from 'react'
 
 async function fetchModuleInfo (module, subModule) {
+  if (!module) {
+    return
+  }
+
   console.log(`fetching module info for ${module}${subModule ? '/' + subModule : ''}`)
   const response = await window.fetch(`/api/${module}${subModule ? '/' + subModule : ''}`)
   return await response.json()
 }
 
-async function fetchCounters (navData) {
-  await Promise.all(navData.map(async (e) => {
-    let moduleInfo = fetchModuleInfo(e.module, e.subModule)
+async function fetchCounter (e, navbarInstance) {
+  let moduleInfo = await fetchModuleInfo(e.module, e.subModule)
 
-    if (moduleInfo.counter) {
-      console.log(`Loading ${moduleInfo.counter}...`)
-      await window.fetch(moduleInfo.counter)
-    }
+  if (!moduleInfo || !moduleInfo.counter) {
+    return
+  }
+
+  console.log(`Loading ${moduleInfo.counter}...`)
+  const response = await window.fetch(moduleInfo.counter)
+
+  let counter = await response.json()
+  navbarInstance.updateNavItemWithCounter(e, counter.count)
+}
+
+async function fetchCounters (navData, navbarInstance) {
+  await Promise.all(navData.map(async (e) => {
     if (e.children) {
-      e.counter = fetchCounters(e.children).count
+      await fetchCounters(e.children, navbarInstance)
     }
+    return fetchCounter(e, navbarInstance)
   }))
 }
 
@@ -24,16 +37,31 @@ class Navbar extends React.Component {
   constructor (props) {
     super(props)
     this.state = {navData: props.navData}
-    console.log(this.state)
+  }
+
+  updateNavItemWithCounter (item, counter) {
+    let navData = [...this.state.navData]
+
+    navData.map((e) => {
+      if (JSON.stringify(item) === JSON.stringify(e)) {
+        console.log('nooit hier?')
+        return {...e, counter}
+      } else {
+        console.log('altijd daar!')
+        return e
+      }
+    })
+
+    this.setState({...this.state, navData: navData})
   }
 
   componentDidMount () {
-    var navData = {...this.state}
-    console.log(this.state)
+    var navData = [...this.state.navData]
 
-    fetchCounters(navData)
+    fetchCounters(navData, this)
+    // console.log('Done fetching counters.')
 
-    this.setState({...this.state, navData: navData})
+    // this.setState({...this.state, navData: navData})
   }
 
   renderEntries (entries) {
