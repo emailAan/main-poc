@@ -67,12 +67,19 @@ class Navbar extends React.Component {
       <Fragment>{
         entries.map(entry => (
           <Fragment>
-            <a href={`#/${entry.label.replace(' ', '')}`}>
-              <li>
-                <span>{entry.label}</span>
-                <span className='counter' >{entry.counter}</span>
-              </li>
-            </a>
+            { entry.module
+              ? <a href={`#/${entry.label.replace(' ', '')}`} onClick={this.hideTiles.bind(this)}>
+                <li>
+                  <span>{entry.label}</span>
+                  <span className='counter' >{entry.counter}</span>
+                </li>
+              </a>
+              : <a href={`#`} onClick={this.showTiles.bind(this, entry.children)}>
+                <li>
+                  <span>{entry.label}</span>
+                </li>
+              </a>
+            }
             {
               entry.children ? this.renderEntries(entry.children) : null
             }
@@ -83,8 +90,12 @@ class Navbar extends React.Component {
     )
   }
 
-  setTiles (children) {
-    this.setState({...this.state, tiles: children})
+  hideTiles () {
+    this.setState({...this.state, showTiles: false})
+  }
+
+  showTiles (children) {
+    this.setState({...this.state, tiles: children, showTiles: true})
   }
 
   render () {
@@ -94,7 +105,7 @@ class Navbar extends React.Component {
       <Fragment>
         <div className='navbar' >
           <ul>
-            <a href={`#`} onClick={this.setTiles.bind(this, navData)}>
+            <a href={`#`} onClick={this.showTiles.bind(this, navData)}>
               <li>
                 <span>Home</span>
               </li>
@@ -102,35 +113,38 @@ class Navbar extends React.Component {
             {this.renderEntries(navData)}
           </ul>
         </div>
-        <div style={{position: 'absolute', top: '50px'}}>
-          {
-            tiles.map((e) => {
-              return (
-                <div className='tile tileSize1x1 x224 x228 txtWhite'>
-                  <div style={{top: '0px', left: '0px', bottom: '0px', right: '0px'}}>
-                    <span style={{position: 'absolute', width: 'auto', height: 'auto', top: '0px', left: '0px', bottom: '0px', right: '0px'}}>
-                      <div>
-                        <span className='fontCounterTile counterOutput'>{e.counter}</span>
-                        <img className='wachten' alt='wachten' class='fontCounterTile' style={{display: 'none'}} src='/UserPortal/resources/images/wait.svg' />
+        {this.state.showTiles
+          ? <div style={{position: 'absolute', top: '50px'}}>
+            {
+              tiles.map((e) => {
+                return (
+                  <div className='tile tileSize1x1 x224 x228 txtWhite'>
+                    <div style={{top: '0px', left: '0px', bottom: '0px', right: '0px'}}>
+                      <span style={{position: 'absolute', width: 'auto', height: 'auto', top: '0px', left: '0px', bottom: '0px', right: '0px'}}>
                         <div>
-                          <span className='fontCounterDescSquare'>{e.label}</span>
+                          <span className='fontCounterTile counterOutput'>{e.counter}</span>
+                          <img className='wachten' alt='wachten' class='fontCounterTile' style={{display: 'none'}} src='/UserPortal/resources/images/wait.svg' />
+                          <div>
+                            <span className='fontCounterDescSquare'>{e.label}</span>
+                          </div>
                         </div>
-                      </div>
-                    </span>
-                    {e.module
-                      ? <a className='tileLink tileSize1x1' href={`#/${e.label.replace(' ', '')}`}>
-                        <span />
-                      </a>
-                      : <a className='tileLink tileSize1x1' onClick={this.setTiles.bind(this, e.children)}>
-                        <span />
-                      </a>
-                    }
+                      </span>
+                      {e.module
+                        ? <a className='tileLink tileSize1x1' onClick={this.hideTiles.bind(this)} href={`#/${e.label.replace(' ', '')}`}>
+                          <span />
+                        </a>
+                        : <a className='tileLink tileSize1x1' onClick={this.showTiles.bind(this, e.children)}>
+                          <span />
+                        </a>
+                      }
+                    </div>
                   </div>
-                </div>
-              )
-            })
-          }
-        </div>
+                )
+              })
+            }
+          </div>
+          : null
+        }
       </Fragment>
     )
   }
