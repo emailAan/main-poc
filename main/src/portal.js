@@ -30,5 +30,5 @@ window.fetch('/api/main/navigation')
     init(nav)
     console.log('Done loading.')
 
-    ReactDOM.render(<Navbar navData={nav} />, document.getElementById('navbar'))
+    ReactDOM.render(<Navbar navData={nav} />, document.getElementById('main'))
   })
