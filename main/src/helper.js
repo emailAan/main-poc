@@ -2,21 +2,15 @@ import * as singleSpa from 'single-spa' // waiting for this to be merged: https:
 
 export function hashPrefix (prefix) {
   return function (location) {
+    console.log(`Moving to ${location}`)
     return location.hash.startsWith(`#${prefix}`)
   }
 }
-// app.get('/api/afsprakenVandaag', () => ({
-//   name: MODULE,
-//   subModule: 'afsprakenVandaag',
-//   label: 'Afspraken van vandaag',
-//   counter: `/api/${MODULE}/counter/afsprakenVandaag`,
-//   stateless: false
-// }))
 
 async function fetchModuleInfo (module, subModule) {
   console.log(`fetching module info for ${module}${subModule ? '/' + subModule : ''}`)
   const response = await window.fetch(`/api/${module}${subModule ? '/' + subModule : ''}`)
-  return await response.json()
+  return response.json()
 }
 
 export async function loadModule (name, module, subModule, globalEventDistributor, props = {}) {

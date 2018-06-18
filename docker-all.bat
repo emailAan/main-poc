@@ -9,3 +9,4 @@ docker build --rm -f proxy/Dockerfile -t main-poc-proxy:latest proxy --build-arg
 docker-compose -f docker-compose.yml up -d --build
 
 
+REM cd main; npm run build; cd  ..; docker build --rm -f main/Dockerfile -t main-poc-main:latest main --build-arg HTTP_PROXY=http://192.168.1.90:8080 --build-arg HTTPS_PROXY=http://192.168.1.90:8080 ; docker-compose -f docker-compose.yml up -d --build

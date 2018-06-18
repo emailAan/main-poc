@@ -62,26 +62,19 @@ class Navbar extends React.Component {
     fetchCounters(this.state.navData, this)
   }
 
-  renderEntries (entries) {
+  renderEntries (entries, lvl = 1) {
     return (
       <Fragment>{
         entries.map(entry => (
           <Fragment>
-            { entry.module
-              ? <a href={`#/${entry.label.replace(' ', '')}`} onClick={this.hideTiles.bind(this)}>
-                <li>
-                  <span>{entry.label}</span>
-                  <span className='counter' >{entry.counter}</span>
-                </li>
-              </a>
-              : <a href={`#`} onClick={this.showTiles.bind(this, entry.children)}>
-                <li>
-                  <span>{entry.label}</span>
-                </li>
-              </a>
-            }
+            <a onClick={this.tileAction.bind(this, entry)}>
+              <li className={lvl > 1 ? 'second' : ''} >
+                <span>{entry.label}</span>
+                {entry.counter ? <span className='counter' >{entry.counter}</span> : null }
+              </li>
+            </a>
             {
-              entry.children ? this.renderEntries(entry.children) : null
+              entry.children ? this.renderEntries(entry.children, lvl + 1) : null
             }
           </Fragment>
         ))
@@ -98,53 +91,65 @@ class Navbar extends React.Component {
     this.setState({...this.state, tiles: children, showTiles: true})
   }
 
+  tileAction (e) {
+    if (e.module) {
+      this.hideTiles()
+      window.location = `#/${e.label.replace(' ', '')}`
+    } else {
+      this.showTiles(e.children)
+      window.location = '#'
+    }
+  }
+
+  renderNavBar (navData) {
+    return (
+      <div className='navbar' >
+        <ul>
+          <a href={`#`} onClick={this.showTiles.bind(this, navData)}>
+            <li>
+              <span>Home</span>
+            </li>
+          </a>
+          {this.renderEntries(navData)}
+        </ul>
+      </div>
+    )
+  }
+
+  renderTiles (tiles) {
+    return this.state.showTiles
+      ? <div style={{position: 'absolute', left: '260px'}}>
+        {
+          tiles.map((e) => {
+            return (
+              <div className='tile tileSize1x1 x224 x228 txtWhite'>
+                <div style={{top: '0px', left: '0px', bottom: '0px', right: '0px'}}>
+                  <span style={{position: 'absolute', width: 'auto', height: 'auto', top: '0px', left: '0px', bottom: '0px', right: '0px'}}>
+                    <div>
+                      <span className='fontCounterTile counterOutput'>{e.counter}</span>
+                      <img className='wachten' alt='wachten' class='fontCounterTile' style={{display: 'none'}} src='/UserPortal/resources/images/wait.svg' />
+                      <div>
+                        <span className='fontCounterDescSquare'>{e.label}</span>
+                      </div>
+                    </div>
+                  </span>
+                  <a className='tileLink tileSize1x1' onClick={this.tileAction.bind(this, e)} />
+                </div>
+              </div>
+            )
+          })
+        }
+      </div>
+      : null
+  }
+
   render () {
     let {navData, tiles} = this.state
 
     return (
       <Fragment>
-        <div className='navbar' >
-          <ul>
-            <a href={`#`} onClick={this.showTiles.bind(this, navData)}>
-              <li>
-                <span>Home</span>
-              </li>
-            </a>
-            {this.renderEntries(navData)}
-          </ul>
-        </div>
-        {this.state.showTiles
-          ? <div style={{position: 'absolute', top: '50px'}}>
-            {
-              tiles.map((e) => {
-                return (
-                  <div className='tile tileSize1x1 x224 x228 txtWhite'>
-                    <div style={{top: '0px', left: '0px', bottom: '0px', right: '0px'}}>
-                      <span style={{position: 'absolute', width: 'auto', height: 'auto', top: '0px', left: '0px', bottom: '0px', right: '0px'}}>
-                        <div>
-                          <span className='fontCounterTile counterOutput'>{e.counter}</span>
-                          <img className='wachten' alt='wachten' class='fontCounterTile' style={{display: 'none'}} src='/UserPortal/resources/images/wait.svg' />
-                          <div>
-                            <span className='fontCounterDescSquare'>{e.label}</span>
-                          </div>
-                        </div>
-                      </span>
-                      {e.module
-                        ? <a className='tileLink tileSize1x1' onClick={this.hideTiles.bind(this)} href={`#/${e.label.replace(' ', '')}`}>
-                          <span />
-                        </a>
-                        : <a className='tileLink tileSize1x1' onClick={this.showTiles.bind(this, e.children)}>
-                          <span />
-                        </a>
-                      }
-                    </div>
-                  </div>
-                )
-              })
-            }
-          </div>
-          : null
-        }
+        {this.renderNavBar(navData)}
+        {this.renderTiles(tiles)}
       </Fragment>
     )
   }
