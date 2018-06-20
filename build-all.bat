@@ -3,6 +3,11 @@ call npm install
 call npm run build:portal
 cd ../..
 
+cd modules/url-loader
+call npm install
+call npm run build:portal
+cd ../..
+
 cd modules/facturatie
 call npm install
 call npm run build:portal

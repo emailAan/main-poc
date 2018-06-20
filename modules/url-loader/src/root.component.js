@@ -15,14 +15,36 @@ class Iframe extends React.Component {
   }
 }
 
+function fetchRedirectUrl (url, callback) {
+  window.fetch(url).then(res => res.text()).then(url => callback(url))
+}
+
 export default class Root extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {redirectUrl: ''}
+  }
+
   componentDidCatch (error, info) {
     console.log(error, info)
   }
 
-  render () {
-    let {url, title} = this.props.customProps
+  fetchRedirectUrl (url, callback) {
+    window.fetch(url).then(res => res.text()).then(url => callback(url))
+  }
 
-    return <Iframe title={title} src={url} />
+  componentDidMount () {
+    this.fetchRedirectUrl(this.props.customProps.url, (redirectUrl) => {
+      this.setState({
+        ...this.state,
+        redirectUrl: redirectUrl })
+    })
+  }
+
+  render () {
+    let {title} = this.props.customProps
+    let {redirectUrl} = this.state
+
+    return <Iframe title={title} src={redirectUrl} />
   }
 }

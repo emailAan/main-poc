@@ -1,16 +1,9 @@
 import React, {Fragment} from 'react'
+import modulesInfo, { fetchModuleInfo } from './ModuleInfo'
 
-async function fetchModuleInfo (module, subModule) {
-  if (!module) {
-    return
-  }
+// let modulesInfo = {}
 
-  console.log(`fetching module info for ${module}${subModule ? '/' + subModule : ''}`)
-  const response = await window.fetch(`/api/${module}${subModule ? '/' + subModule : ''}`)
-  return response.json()
-}
-
-async function fetchCounter (e, navbarInstance) {
+async function fetchCounterAsync (e, navbarInstance) {
   let moduleInfo = await fetchModuleInfo(e.module, e.subModule)
 
   if (!moduleInfo || !moduleInfo.counter) {
@@ -24,13 +17,13 @@ async function fetchCounter (e, navbarInstance) {
   navbarInstance.updateNavItemWithCounter(e, counter.count)
 }
 
-async function fetchCounters (navData, navbarInstance) {
-  await Promise.all(navData.map(async (e) => {
+function fetchCounters (navData, navbarInstance) {
+  navData.map((e) => {
     if (e.children) {
-      await fetchCounters(e.children, navbarInstance)
+      fetchCounters(e.children, navbarInstance)
     }
-    return fetchCounter(e, navbarInstance)
-  }))
+    return fetchCounterAsync(e, navbarInstance)
+  })
 }
 
 class Navbar extends React.Component {

@@ -2,6 +2,14 @@ main:
  image: main-poc-main
  ports:
   - "3000"
+# adf-modules:
+#  image: main-poc-adf-modules
+#  ports:
+#   - "3000"
+adf-sso:
+ image: main-poc-adf-sso
+ ports:
+  - "3000"
 agenda:
  image: main-poc-agenda
  ports:
@@ -22,6 +30,8 @@ proxy:
  image: main-poc-proxy
  links:
    - main
+  #  - adf-modules
+   - adf-sso
    - agenda
    - facturatie
    - url-loader

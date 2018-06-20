@@ -12,7 +12,7 @@ async function init (nav) {
   await Promise.all(nav.map(async (e) => {
     if (e.module) {
       console.log(`Loading ${e.label}...`)
-      await loadModule(e.label.replace(' ', ''), e.module, e.subModule, globalEventDistributor, {...e.params})
+      loadModule(e.label.replace(' ', ''), e.module, e.subModule, globalEventDistributor, {...e.params})
     }
     if (e.children) {
       init(e.children)
@@ -27,8 +27,8 @@ window.fetch('/api/main/navigation')
     return response.json()
   })
   .then(function (nav) {
+    ReactDOM.render(<Navbar navData={nav} />, document.getElementById('main'))
+
     init(nav)
     console.log('Done loading.')
-
-    ReactDOM.render(<Navbar navData={nav} />, document.getElementById('main'))
   })
