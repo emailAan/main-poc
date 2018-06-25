@@ -3,12 +3,21 @@ import ReactDOM from 'react-dom'
 import singleSpaReact from 'single-spa-react'
 import Root from './root.component.js'
 
-const reactLifecycles = singleSpaReact({
+export const reactLifecycles = singleSpaReact({
   React,
   ReactDOM,
   rootComponent: Root,
   domElementGetter
 })
+
+const reactLifecyclesParcel = singleSpaReact({
+  React,
+  ReactDOM,
+  rootComponent: Root,
+  domElementGetter
+})
+
+export default reactLifecyclesParcel
 
 export function bootstrap (props) {
   return reactLifecycles.bootstrap(props)

@@ -2,7 +2,6 @@
 let modulesInfo = {}
 
 modulesInfo['url-loader'] = fetchModuleInfo('url-loader')
-console.log('url loader fetched', JSON.stringify(modulesInfo))
 
 export async function fetchModuleInfo (module, subModule) {
   if (!module) {

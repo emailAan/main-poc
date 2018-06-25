@@ -13,3 +13,4 @@ REM docker rm $(docker ps -a -q)
 
 REM cd main; npm run build; cd  ..; docker build --rm -f main/Dockerfile -t main-poc-main:latest main --build-arg HTTP_PROXY=http://192.168.1.90:8080 --build-arg HTTPS_PROXY=http://192.168.1.90:8080 ; docker-compose -f docker-compose.yml up -d --build
 REM cd modules/url-loader; npm run build:portal; cd  ../..; docker build --rm -f modules/url-loader/Dockerfile -t main-poc-url-loader:latest modules/url-loader --build-arg HTTP_PROXY=http://192.168.1.90:8080 --build-arg HTTPS_PROXY=http://192.168.1.90:8080  ; docker-compose -f docker-compose.yml up -d --build
+REM cd modules/agenda; npm run build:portal; cd  ../..; docker build --rm -f modules/agenda/Dockerfile -t main-poc-agenda:latest modules/agenda --build-arg HTTP_PROXY=http://192.168.1.90:8080 --build-arg HTTPS_PROXY=http://192.168.1.90:8080  ; docker-compose -f docker-compose.yml up -d --build

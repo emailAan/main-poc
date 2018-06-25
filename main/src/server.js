@@ -2,6 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 
+const PORT = 8080
+
 app.use(express.static('public'))
 
 app.use(bodyParser.json())
@@ -1812,4 +1814,4 @@ app.get('/api/navigation', function (req, res) {
   res.status(200).send(nav)
 })
 
-app.listen(3000, () => console.log('Main app listening on port 3000!'))
+app.listen(PORT, () => console.log(`Main app listening on port ${PORT}!`))

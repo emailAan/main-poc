@@ -1,7 +1,5 @@
 import React, {Fragment} from 'react'
-import modulesInfo, { fetchModuleInfo } from './ModuleInfo'
-
-// let modulesInfo = {}
+import { fetchModuleInfo } from './ModuleInfo'
 
 async function fetchCounterAsync (e, navbarInstance) {
   let moduleInfo = await fetchModuleInfo(e.module, e.subModule)
@@ -10,7 +8,7 @@ async function fetchCounterAsync (e, navbarInstance) {
     return
   }
 
-  console.log(`Loading ${moduleInfo.counter}...`)
+  // console.log(`Loading ${moduleInfo.counter}...`)
   const response = await window.fetch(moduleInfo.counter)
 
   let counter = await response.json()
