@@ -1,0 +1,14 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "main/package.json",
+        "modules/agenda/package.json",
+        "modules/facturatie/package.json",
+        "modules/url-loader/package.json",
+        "modules/zorgplan/package.json",
+        "proxy/package.json"
+      ]
+    }
+  }
+}
